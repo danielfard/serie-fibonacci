@@ -13,20 +13,17 @@ def validate_email_format(email: str) -> str:
 
 # Define una ruta y su función controladora
 @app.get("/", summary="Generar Serie Fibonacci y Enviar Correos", tags=["Fibonacci"])
-async def read_root(email_1: str = Depends(validate_email_format), email_2: str = None):
+async def read_root(email_1: str = Depends(validate_email_format)):
     """
     ## Endpoint para generar la serie de Fibonacci y enviarla por correo electrónico.
 
     **Parámetros:**
     - **email 1** (str): Correo electrónico al que se enviará la serie de Fibonacci.
-    - **email 2** (str - Optional): Correo electrónico al que se enviará la serie de Fibonacci.
 
     **Retorna:**
     - Lista de números de la serie de Fibonacci generada.
     """
     try:
-        if email_2 is not None:
-            validate_email_format(email_2)
             
         seed_x, seed_y, n, current_time = get_seeds_from_time()
         fibonacci_numbers = fibonacci_series(seed_x, seed_y, n + 2)
@@ -36,7 +33,7 @@ async def read_root(email_1: str = Depends(validate_email_format), email_2: str 
         
         # Convertir la lista a una cadena
         cadena = ', '.join(lista_convertida)
-        enviar_correo(cadena, email_1, email_2, current_time)
+        enviar_correo(cadena, email_1, current_time)
         
         return {"Hora":current_time, "Fibonacci List":fibonacci_numbers}
     except HTTPException as e:
