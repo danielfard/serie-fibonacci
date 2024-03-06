@@ -34,12 +34,12 @@ def get_seeds_from_time():
 def enviar_correo(mensaje, email_1, email_2, current_time):
     remitente = "<danielfuentesardila@gmail.com>"
     destinatario1 = f"<{email_1}>"
-    destinatario2 = f"<{email_2}>" if email_2 is not None else ""
+    destinatario2 = f"<{email_2}>" if email_2 else None
     
     # Crear un objeto MIMEMultipart
     email = MIMEMultipart()
     email['From'] = remitente
-    email['To'] = destinatario1 + (", " + destinatario2 if destinatario2 else "")
+    email['To'] = ", ".join(filter(None, [destinatario1, destinatario2]))
     email['Subject'] = "Prueba Técnica - Daniel Alejandro Fuentes Ardila"
     
     # Agregar el mensaje como parte del correo electrónico
@@ -62,8 +62,9 @@ def enviar_correo(mensaje, email_1, email_2, current_time):
         server.login(smtp_username, smtp_password)
 
         # Enviar el correo electrónico
-        server.sendmail(remitente, destinatario1 + (", " + destinatario2 if destinatario2 else ""), email.as_string())
-
+        destinatarios = filter(None, [destinatario1, destinatario2])
+        server.sendmail(remitente, ", ".join(destinatarios), email.as_string())
+        
         # Cerrar la conexión con el servidor SMTP
         server.quit()
 

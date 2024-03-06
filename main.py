@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends
 import uvicorn
 from utils import get_seeds_from_time, enviar_correo, fibonacci_series
 import re
-app = FastAPI()
+app = FastAPI(title="Generador de Serie Fibonacci y Envío de Correos")
 
 # Función para validar el formato del correo electrónico utilizando regex
 def validate_email_format(email: str) -> str:
@@ -12,13 +12,14 @@ def validate_email_format(email: str) -> str:
     return email
 
 # Define una ruta y su función controladora
-@app.get("/")
+@app.get("/", summary="Generar Serie Fibonacci y Enviar Correos", tags=["Fibonacci"])
 async def read_root(email_1: str = Depends(validate_email_format), email_2: str = None):
     """
-    ### Endpoint para generar la serie de Fibonacci y enviarla por correo electrónico.
+    ## Endpoint para generar la serie de Fibonacci y enviarla por correo electrónico.
 
     **Parámetros:**
-    - *email* (str): Correo electrónico al que se enviará la serie de Fibonacci.
+    - **email 1** (str): Correo electrónico al que se enviará la serie de Fibonacci.
+    - **email 2** (str - Optional): Correo electrónico al que se enviará la serie de Fibonacci.
 
     **Retorna:**
     - Lista de números de la serie de Fibonacci generada.
