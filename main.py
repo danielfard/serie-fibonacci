@@ -41,7 +41,3 @@ async def read_root(email_1: str = Depends(validate_email_format), email_2: str 
         return {"Hora":current_time, "Fibonacci List":fibonacci_numbers}
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=str(e))
-    
-# Si ejecutas este archivo directamente, uvicorn lanzará el servidor
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
