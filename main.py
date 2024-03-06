@@ -41,3 +41,4 @@ async def read_root(email_1: str = Depends(validate_email_format), email_2: str 
         return {"Hora":current_time, "Fibonacci List":fibonacci_numbers}
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=str(e))
+    
